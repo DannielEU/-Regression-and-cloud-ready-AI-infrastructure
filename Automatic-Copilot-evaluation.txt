@@ -1,0 +1,253 @@
+===========================================================
+  AUTOMATIC COPILOT EVALUATION – TA GRADING REPORT
+  Course: Digital Transformation and Enterprise Architecture
+  Topic:  Stellar Luminosity – Regression from First Principles
+===========================================================
+
+-----------------------------------------------------------
+SUMMARY
+-----------------------------------------------------------
+The repository presents a solid, technically correct implementation of
+linear and polynomial regression from first principles using only NumPy
+and Matplotlib. Both notebooks are well-organized, the datasets are
+defined inline, and the core mathematics (MSE, gradient derivation,
+vectorized operations, feature engineering, normalization) are correctly
+implemented. The main weaknesses are the absence of convergence curves
+(loss vs. epoch plots) in both notebooks, the missing final-fit
+visualization in Notebook 1, the non-vectorized gradient descent being
+defined but never independently exercised in training, and limited
+interpretive commentary on the inference result in Notebook 2. Cloud
+evidence is present but the README image links omit the img/ subfolder
+prefix (they reference image*.png in the root instead of img/image*.png),
+and no explicit local-vs-cloud
+comparison is provided. Overall the submission demonstrates sound
+understanding of the subject matter.
+
+-----------------------------------------------------------
+GRADING BREAKDOWN  (0.0 – 5.0 scale)
+-----------------------------------------------------------
+
+1. REPOSITORY STRUCTURE & COMPLIANCE        Score: 0.5 / 0.5
+   ✔ README.md present and descriptive.
+   ✔ Two notebooks clearly covering Part I and Part II.
+   ✔ All datasets defined inside the notebooks.
+   ✔ Only NumPy and Matplotlib used (mpl_toolkits.mplot3d is part of
+     Matplotlib); no scikit-learn or other ML libraries.
+   No deductions.
+
+---
+
+2. NOTEBOOK 1 – LINEAR REGRESSION          Score: 1.4 / 2.0
+
+   What is present and correct:
+   ✔ Dataset defined inline; scatter plot with axis labels.
+   ✔ Markdown explains that the relationship is non-linear, anticipating
+     model limitations – good conceptual framing.
+   ✔ predict() and mse_loss() implemented correctly.
+   ✔ Cost surface J(w,b) computed on a full grid and rendered as a 3D
+     surface (viridis colormap) – MANDATORY item satisfied.
+   ✔ Both non-vectorized (gradients_loop) and vectorized
+     (gradients_vectorized) gradient functions correctly derived and
+     implemented.
+   ✔ Three learning rates tested (lr = 0.001, 0.01, 0.05) – MANDATORY
+     item satisfied.
+   ✔ Conceptual discussion of the meaning of w and limits of linearity
+     provided in the final markdown cell.
+
+   Deductions:
+   – Convergence plot (loss vs. epoch) is MISSING (-0.3).
+     Cell 15 only prints the final scalar loss for each learning rate;
+     no curve is produced. This is a MANDATORY item.
+   – The non-vectorized gradient function (gradients_loop) is defined
+     but the train() function always calls gradients_vectorized. There
+     is no separate demonstration that gradients_loop produces the same
+     result or that it is used for training. (-0.1)
+   – Final fit plot (predicted line overlaid on data scatter) is
+     absent. (-0.2)
+
+---
+
+3. NOTEBOOK 2 – POLYNOMIAL REGRESSION      Score: 1.7 / 2.0
+
+   What is present and correct:
+   ✔ Dataset defined inline with M, T, L arrays.
+   ✔ Scatter plot using temperature as colormap (plasma) – good
+     visualization of a two-feature relationship.
+   ✔ Feature engineering correctly implements all three design matrices:
+       M1 = [M, T]
+       M2 = [M, T, M²]
+       M3 = [M, T, M², M·T]
+   ✔ Z-score normalization applied before training – good practice.
+   ✔ Vectorized predict(), mse(), and gradients() correctly implemented
+     using matrix operations (X @ w).
+   ✔ M1, M2, M3 trained and final losses printed – MANDATORY feature
+     selection comparison satisfied.
+   ✔ w_MT sweep (interaction cost analysis) implemented and plotted –
+     MANDATORY item satisfied.
+   ✔ Inference example for M=1.3, T=6600 K present – MANDATORY item
+     satisfied.
+
+   Deductions:
+   – Convergence plot (loss vs. epoch for each model) is MISSING (-0.2).
+     Cell 12 records losses[] but never plots them; training dynamics
+     cannot be assessed visually.
+   – Inference interpretation is minimal: only the raw predicted number
+     is printed, with no surrounding discussion of what the value means
+     physically or whether it is plausible. (-0.1)
+
+---
+
+4. CLOUD EXECUTION EVIDENCE (SageMaker)    Score: 0.3 / 0.5
+
+   ✔ README contains an "AWS SageMaker" section and states that the
+     project was executed there.
+   ✔ Three PNG screenshots are present in the repository (img/ folder)
+     and appear to show notebook execution inside SageMaker
+     (1919×1077 – 1914×1089 pixels, full-screen browser shots).
+
+   Deductions:
+   – README image links are broken: they reference image.png,
+     image-1.png, image-2.png in the root, but the files are stored
+     under img/. Screenshots cannot be rendered by a reader following
+     the README as-is. (-0.1)
+   – No explicit local vs. cloud comparison (e.g., execution time,
+     environment differences, reproducibility notes) is provided. (-0.1)
+
+---
+
+TOTAL SCORE:  3.9 / 5.0
+
+-----------------------------------------------------------
+FINAL GRADE
+-----------------------------------------------------------
+Final grade: 3.9 / 5.0
+
+Result: PASS  (minimum passing grade: 3.0 / 5.0)
+
+-----------------------------------------------------------
+STRENGTHS
+-----------------------------------------------------------
+• Clean, readable code with consistent naming and logical cell flow.
+• Both gradient functions (loop and vectorized) are mathematically
+  correct; the factor 2/N is handled properly throughout.
+• The 3D cost surface is a particularly strong visualization; the grid
+  approach is correct and the explanation in the surrounding markdown
+  is appropriate.
+• Feature normalization in Notebook 2 demonstrates awareness of
+  numerical stability requirements for gradient descent.
+• The interaction-weight sweep (w_MT cost curve) is a thoughtful
+  experiment that goes slightly beyond the minimum requirement.
+• Dataset is physically motivated (real stellar mass-luminosity
+  relationship) and clearly labeled in both notebooks.
+• All computations are reproducible from a clean Python + NumPy +
+  Matplotlib environment without any external ML dependency.
+
+-----------------------------------------------------------
+ISSUES & MISSING ELEMENTS
+-----------------------------------------------------------
+• [CRITICAL – MANDATORY] Convergence plot missing in Notebook 1.
+  The training loop records losses but no loss-vs-epoch curve is
+  plotted or discussed for any of the three learning rates.
+• [CRITICAL – MANDATORY] Convergence plot missing in Notebook 2.
+  Same issue: losses[] accumulated but never visualized.
+• [NOTABLE] Final fitted-line overlay plot absent in Notebook 1.
+  There is no plot showing the learned linear model on top of the
+  scatter data, making it impossible to visually assess the fit.
+• [MINOR] Non-vectorized gradient descent not exercised in training.
+  gradients_loop is defined and correct, but train() always uses
+  gradients_vectorized. A brief side-by-side comparison or validation
+  run would complete the requirement.
+• [MINOR] Inference result in Notebook 2 lacks interpretive discussion.
+  Only a number is printed; the student should explain whether the
+  value is physically plausible and how it compares to nearby
+  training samples.
+• [MINOR] README SageMaker screenshot links are broken (wrong relative
+  path). Should be img/image.png, img/image-1.png, img/image-2.png.
+• [MINOR] No local vs. cloud comparison discussion in the README.
+
+-----------------------------------------------------------
+TA FEEDBACK TO STUDENT
+-----------------------------------------------------------
+You have built a technically sound foundation: the mathematics are
+correct, the code is clean, and the overall structure of both notebooks
+is logical. To bring this submission to a higher level, please address
+the following:
+
+1. Add convergence plots to both notebooks. After training with each
+   learning rate (Notebook 1) or each model variant (Notebook 2), plot
+   the loss curve over epochs. Discuss what you observe: does it
+   converge quickly or slowly? Does the curve flatten early, suggesting
+   convergence, or does it continue declining?
+
+2. Add a final fit visualization in Notebook 1. Plot the learned linear
+   model L_hat = w·M + b overlaid on the original scatter data. This
+   makes the systematic errors (where the linear model under- or
+   over-predicts) immediately visible and ties back to your discussion
+   of linearity limits.
+
+3. Demonstrate the non-vectorized gradient descent in training. Even a
+   brief cell that verifies that gradients_loop and gradients_vectorized
+   return numerically identical results — or that training with the loop
+   version reaches the same final loss — would complete this requirement.
+
+4. Expand the inference interpretation in Notebook 2. State whether the
+   predicted luminosity is physically consistent with what we know about
+   a star of M=1.3 and T=6600 K, compare it to the nearest training
+   point, and comment on the reliability of the extrapolation.
+
+5. Fix the README image paths (add the img/ prefix) so that the
+   SageMaker screenshots are visible to any reviewer reading the
+   repository on GitHub.
+
+These are all relatively small additions that would significantly
+strengthen the submission.
+
+-----------------------------------------------------------
+AI-GENERATION ASSESSMENT  (NON-GRADING, INFORMATIONAL ONLY)
+-----------------------------------------------------------
+
+A. Qualitative Assessment
+
+   Indicators consistent with AI-assisted generation:
+   – Markdown explanations follow a uniform template (one-sentence
+     section header, two-sentence description) across both notebooks
+     with very little variation in depth or tone.
+   – Code is syntactically clean and free of debugging artifacts,
+     commented-out alternatives, or iterative refinements that typically
+     appear in human-authored exploratory notebooks.
+   – Variable naming is perfectly consistent throughout (M, L, T, w, b,
+     dw, db) with no typos or mid-session renames.
+   – Error discussion in the closing markdown of Notebook 1 uses generic
+     phrasing ("captura la tendencia general", "presentará errores
+     sistemáticos") without referencing specific numerical results from
+     the run.
+   – The README structure mirrors a standard template (Description,
+     Notebooks, Data, Requirements, Execution, Results, Cloud, Author).
+
+   Indicators consistent with human involvement:
+   – The physical dataset (stellar masses and luminosities) is curated
+     to reflect the real mass-luminosity relation (roughly L ∝ M^4),
+     suggesting domain awareness rather than random example data.
+   – The choice of axis ranges for the cost surface grid (w: -5 to 10,
+     b: -10 to 10) is specific to the data scale, implying some manual
+     tuning.
+   – The SageMaker screenshots were captured and organized by a human.
+
+B. Quantitative Estimate
+   Code:                  ~70%  AI-assisted
+   Explanations/markdown: ~80%  AI-assisted
+   README:                ~75%  AI-assisted
+
+C. Commentary
+   The submission exhibits the hallmarks of AI-assisted authoring: highly
+   uniform prose structure, clean boilerplate code with no exploratory
+   residue, and generic interpretive comments that do not reference the
+   actual numerical outputs of the cells. However, the physical dataset
+   and specific parameter choices suggest meaningful human direction of
+   the AI tool rather than fully autonomous generation. The SageMaker
+   execution evidence is clearly human-initiated. This assessment is
+   observational and does not imply misconduct.
+
+===========================================================
+END OF REPORT
+===========================================================
